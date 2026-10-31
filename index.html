@@ -4,435 +4,401 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#6b2646">
-<title>For You — ❤</title>
+<title>You, Me & Everything In Between ❤</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/css/style.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
 </head>
 <body>
+  <div class="mood-veil" id="moodVeil" aria-hidden="true"></div>
 
-<!-- fixed veil: deepens behind everything during the two-heart scene (driven by chapters.js) -->
-<div class="mood-veil" id="moodVeil" aria-hidden="true"></div>
+  <!-- MUSIC TOGGLE -->
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle music" title="Music">
+    <span class="ring"></span>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 9v6h3.5L12 19V5L7.5 9H4z"/>
+      <path class="bars" d="M16 8.5a5 5 0 0 1 0 7"/>
+      <path class="bars" d="M18.6 6a8.5 8.5 0 0 1 0 12"/>
+      <path class="slash" d="M4 4 L20 20"/>
+    </svg>
+  </button>
 
-<!-- ============ MUSIC TOGGLE ============ -->
-<button class="music-toggle" id="musicToggle" aria-label="Toggle music" title="Music">
-  <span class="ring"></span>
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M4 9v6h3.5L12 19V5L7.5 9H4z"/>
-    <path class="bars" d="M16 8.5a5 5 0 0 1 0 7"/>
-    <path class="bars" d="M18.6 6a8.5 8.5 0 0 1 0 12"/>
-    <path class="slash" d="M4 4 L20 20"/>
-  </svg>
-</button>
+  <!-- 1. HERO — HEART, BOW & ARROW, PARCHMENT -->
+  <section id="hero" class="scene">
+    <canvas id="heroCanvas" class="scene-canvas"></canvas>
+    <div class="hero-veil"></div>
+    <!-- soft curtain that lifts while the heart emerges -->
+    <div class="hero-black" id="heroBlack"></div>
+    <div class="webgl-layer" id="hero3d" aria-hidden="true"></div>
 
+    <!-- bow, arrow, aim guide, crack and sparkles are drawn here -->
+    <canvas id="shootCanvas" class="shoot-canvas" tabindex="0"
+            aria-label="Aim the bow at the heart. Move the pointer, or use the arrow keys, then click or press Enter to shoot."></canvas>
 
-<!-- ============================================================
-     1. HERO — HEART, BOW & ARROW, PARCHMENT
-     ============================================================ -->
-<section id="hero" class="scene">
-  <canvas id="heroCanvas" class="scene-canvas"></canvas>
-  <div class="hero-veil"></div>
-  <!-- soft curtain that lifts while the heart emerges -->
-  <div class="hero-black" id="heroBlack"></div>
-  <div class="webgl-layer" id="hero3d" aria-hidden="true"></div>
-
-  <!-- bow, arrow, aim guide, crack and sparkles are drawn here -->
-  <canvas id="shootCanvas" class="shoot-canvas" tabindex="0"
-          aria-label="Aim the bow at the heart. Move the pointer, or use the arrow keys, then click or press Enter to shoot."></canvas>
-
-  <div class="hero-copy">
-    <p class="hl" id="heroLine1">Somewhere between all the noise,</p>
-    <p class="hl" id="heroLine2">there&rsquo;s always been you.</p>
-  </div>
-
-  <p class="aim-hint" id="aimHint" aria-live="polite"></p>
-  <button type="button" class="skip-open" id="skipOpen" hidden>Skip the opening</button>
-
-  <!-- the parchment (text comes from config.js → openingLetter) -->
-  <div class="parchment" id="parchment" aria-hidden="true">
-    <div class="parch-shadow"></div>
-    <div class="parch-rod parch-rod-top"></div>
-    <div class="parch-sheet" id="parchSheet">
-      <div class="parch-inner" id="parchInner">
-        <p class="parch-title" id="parchTitle"></p>
-        <div class="parch-body" id="parchBody"></div>
-        <p class="parch-sign" id="parchSign"></p>
-      </div>
-    </div>
-    <div class="parch-rod parch-rod-bot"></div>
-    <span class="parch-ribbon"></span>
-  </div>
-
-  <div class="scroll-cue" id="scrollCue">
-    <span>Scroll</span>
-    <i></i>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     2. YOU ARE MY WORLD
-     ============================================================ -->
-<section id="world" class="scene">
-  <div class="scene-inner">
-    <p class="chapter rv">Chapter <span>02</span> &nbsp;·&nbsp; You Are My World</p>
-
-    <div class="world-stage" id="worldStage">
-      <div class="webgl-layer fade" id="world3d" aria-hidden="true"></div>
-      <!-- word slots injected by JS -->
+    <div class="hero-copy">
+      <p class="hl" id="heroLine1">Somewhere between all the noise,</p>
+      <p class="hl" id="heroLine2">there&rsquo;s always been you.</p>
     </div>
 
-    <p class="sub rv" style="text-align:center;max-width:46ch;margin:0 auto;">
-      Everything around me keeps changing. The noise, the days, the distance&hellip;
-      and still, you are the one constant I keep coming back to.
-    </p>
-  </div>
-</section>
+    <p class="aim-hint" id="aimHint" aria-live="polite"></p>
+    <button type="button" class="skip-open" id="skipOpen" hidden>Skip the opening</button>
 
-
-<!-- ============================================================
-     3. MEMORY CAPSULE
-     ============================================================ -->
-<section id="capsule" class="scene">
-  <div class="scene-inner">
-    <p class="chapter rv">Chapter <span>03</span> &nbsp;·&nbsp; Memory Capsule</p>
-
-    <div class="capsule-wrap">
-      <div class="capsule-film-flash" id="capsuleFilmFlash"></div>
-      <div class="capsule" id="capsuleEl">
-        <div class="capsule-body">
-          <div class="capsule-inner" id="capsuleInner">
-
-            <!-- photo + caption come from config.js → capsule -->
-            <div class="photo-frame">
-              <img id="capsulePhoto" alt="" loading="lazy" decoding="async">
-            </div>
-            <p class="photo-cap" id="capsuleCaption"></p>
-
-            <div class="mem-date">Memory 01 &nbsp;·&nbsp; 14 · 02 · 20XX</div>
-            <h3 class="mem-title">The First Date</h3>
-            <p class="mem-line">
-              I remember being nervous in a way I hadn&rsquo;t been in years.
-              And then you laughed, and everything got quiet.
-            </p>
-
-            <div class="fragments">
-              <span class="frag">the first hello</span>
-              <span class="frag">too much coffee</span>
-              <span class="frag">that laugh</span>
-              <span class="frag">a walk that felt too short</span>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="capsule-lid" id="capsuleLid">
-          <span class="lid-label">Capsule · Locked</span>
-          <span class="lid-seal"></span>
-        </div>
-
-        <!-- Date lock (visual prototype). Keyboard fields + optional calendar picker. -->
-        <div class="capsule-lock" id="capsuleLock">
-          <svg class="lock-icon" viewBox="0 0 48 56" aria-hidden="true">
-            <path class="shackle" id="lockShackle" d="M14 26V18a10 10 0 0 1 20 0v8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-            <rect x="7" y="25" width="34" height="26" rx="7" fill="rgba(217,72,107,.14)" stroke="currentColor" stroke-width="2.4"/>
-            <circle cx="24" cy="37" r="3.2" fill="currentColor"/><path d="M24 40v5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-          <p class="lock-prompt" id="lockPrompt">Our first date?</p>
-          <div class="date-entry" role="group" aria-label="Enter the date">
-            <input id="dateDD" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Day" autocomplete="off">
-            <span aria-hidden="true">&middot;</span>
-            <input id="dateMM" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Month" autocomplete="off">
-            <span aria-hidden="true">&middot;</span>
-            <input id="dateYYYY" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Year" autocomplete="off" class="yr">
-            <button type="button" id="datePick" class="date-pick" aria-label="Choose from a calendar">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </button>
-            <input type="date" id="dateNative" class="visually-hidden" aria-hidden="true" tabindex="-1">
-          </div>
-          <p class="lock-hint" id="lockHint" aria-live="polite">Type it, or pick it from the calendar.</p>
-          <button type="button" class="lock-go" id="lockGo">Open the memory</button>
+    <!-- the parchment -->
+    <div class="parchment" id="parchment" aria-hidden="true">
+      <div class="parch-shadow"></div>
+      <div class="parch-rod parch-rod-top"></div>
+      <div class="parch-sheet" id="parchSheet">
+        <div class="parch-inner" id="parchInner">
+          <p class="parch-title" id="parchTitle"></p>
+          <div class="parch-body" id="parchBody"></div>
+          <p class="parch-sign" id="parchSign"></p>
         </div>
       </div>
+      <div class="parch-rod parch-rod-bot"></div>
+      <span class="parch-ribbon"></span>
     </div>
 
-    <div class="capsule-relock" id="capsuleRelock" hidden>
-      <p>Lock it away to preserve the memory&hellip; or keep it just for our eyes. &#10084;&#65039;</p>
-      <button type="button" class="relock-btn" id="relockBtn"><span class="relock-ico" aria-hidden="true"></span>Lock the memory again</button>
+    <div class="scroll-cue" id="scrollCue">
+      <span>Scroll</span>
+      <i></i>
     </div>
+  </section>
 
-    <div class="capsule-outro" id="capsuleOutro">
-      <p>This is only a tiny preview of our story.</p>
-      <p>There&rsquo;s a lot more waiting ahead.</p>
-    </div>
-  </div>
-</section>
+  <!-- 2. YOU ARE MY WORLD -->
+  <section id="world" class="scene">
+    <div class="scene-inner">
+      <p class="chapter rv">Chapter <span>02</span> &nbsp;·&nbsp; You Are My World</p>
 
-
-<!-- ============================================================
-     4. THINGS I CHOOSE  — choices are made by pressing and holding
-     ============================================================ -->
-<section id="choose" class="scene">
-  <div class="scene-inner">
-    <p class="chapter rv">Chapter <span>04</span> &nbsp;·&nbsp; Things I Choose</p>
-    <h2 class="headline rv" style="text-align:center;">
-      Love isn&rsquo;t only a feeling.<br><em>It&rsquo;s a series of choices.</em>
-    </h2>
-
-    <div class="choose-field" id="chooseField">
-      <div class="choose-stage" id="chooseStage">
-        <svg class="choose-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path class="cp-base" id="cpBase" pathLength="1"/>
-          <path class="cp-prog" id="cpProg" pathLength="1"/>
-        </svg>
-
-        <!-- the heart fills as each choice is made -->
-        <div class="choose-heart" id="chooseHeart" aria-hidden="true">
-          <svg viewBox="0 0 100 100">
-            <defs>
-              <clipPath id="chHeartClip"><path d="M50 88.5C50 88.5 7.5 61.5 7.5 35.5C7.5 19.5 19.8 9 33 9C41.4 9 47.4 13.3 50 19.6C52.6 13.3 58.6 9 67 9C80.2 9 92.5 19.5 92.5 35.5C92.5 61.5 50 88.5 50 88.5Z"/></clipPath>
-              <linearGradient id="chFillGrad" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0" stop-color="#d9486b"/><stop offset="1" stop-color="#f6a3b8"/>
-              </linearGradient>
-            </defs>
-            <g clip-path="url(#chHeartClip)"><rect id="chFill" x="0" y="0" width="100" height="100" fill="url(#chFillGrad)"/></g>
-            <path class="ch-outline" d="M50 88.5C50 88.5 7.5 61.5 7.5 35.5C7.5 19.5 19.8 9 33 9C41.4 9 47.4 13.3 50 19.6C52.6 13.3 58.6 9 67 9C80.2 9 92.5 19.5 92.5 35.5C92.5 61.5 50 88.5 50 88.5Z"/>
-          </svg>
-        </div>
-
-        <div class="choose-item m-select"     data-x="50" data-y="13" data-z="70"   style="--x:50;--y:13;--d:0"><span class="choose-vis"><span class="choose-num"><b>01</b></span><span class="choose-text" data-t="Choosing you.">Choosing you.</span><i class="motif"></i></span></div>
-        <div class="choose-item m-understand" data-x="21" data-y="37" data-mx="30" data-z="-130" style="--x:21;--y:37;--mx:30;--d:1"><span class="choose-vis"><span class="choose-num"><b>02</b></span><span class="choose-text" data-t="Understanding you.">Understanding you.</span><i class="motif"></i></span></div>
-        <div class="choose-item m-listen"     data-x="78" data-y="35" data-mx="70" data-z="-60"  style="--x:78;--y:35;--mx:70;--d:2"><span class="choose-vis"><span class="choose-num"><b>03</b></span><span class="choose-text" data-t="Listening to you.">Listening to you.</span><i class="motif"></i></span></div>
-        <div class="choose-item m-grow"       data-x="30" data-y="62" data-mx="34" data-z="90"   style="--x:30;--y:62;--mx:34;--d:3"><span class="choose-vis"><span class="choose-num"><b>04</b></span><span class="choose-text" data-t="Growing with you.">Growing with you.</span><i class="motif"></i></span></div>
-        <div class="choose-item m-learn"      data-x="74" data-y="65" data-mx="66" data-z="-170" style="--x:74;--y:65;--mx:66;--d:4"><span class="choose-vis"><span class="choose-num"><b>05</b></span><span class="choose-text" data-t="Learning you.">Learning you.</span><i class="motif"></i></span></div>
-        <div class="choose-item m-care"       data-x="50" data-y="88" data-z="20"   style="--x:50;--y:88;--d:5"><span class="choose-vis"><span class="choose-num"><b>06</b></span><span class="choose-text" data-t="Taking care of what we have.">Taking care of what we have.</span><i class="motif"></i></span></div>
+      <div class="world-stage" id="worldStage">
+        <div class="webgl-layer fade" id="world3d" aria-hidden="true"></div>
       </div>
-    </div>
-    <p class="choose-hint" id="chooseHint" aria-live="polite"></p>
-  </div>
-</section>
 
-
-<!-- ============================================================
-     5. I'M STILL BECOMING  (+ 3D envelope + closing lines)
-     ============================================================ -->
-<section id="becoming" class="scene">
-  <div class="scene-inner">
-    <p class="chapter rv">Chapter <span>05</span> &nbsp;·&nbsp; I&rsquo;m Still Becoming</p>
-    <h2 class="headline rv" style="text-align:center;margin-bottom:clamp(38px,6vh,68px);">
-      I&rsquo;m not the finished version of me yet.
-    </h2>
-
-    <div class="become-track" id="becomeTrack">
-      <div class="become-node" data-i="0">
-        <span class="bn-label">Version 1.0</span>
-        <p class="bn-note">Where I started — imperfect, but honest.</p>
-      </div>
-      <div class="become-node" data-i="1">
-        <span class="bn-label">Learn</span>
-        <p class="bn-note">How you like your tea. How you need your space.</p>
-      </div>
-      <div class="become-node" data-i="2">
-        <span class="bn-label">Understand</span>
-        <p class="bn-note">Why you go quiet sometimes, and what those silences mean.</p>
-      </div>
-      <div class="become-node" data-i="3">
-        <span class="bn-label">Improve</span>
-        <p class="bn-note">The parts of me that still need gentler edges.</p>
-      </div>
-      <div class="become-node" data-i="4">
-        <span class="bn-label">Grow</span>
-        <p class="bn-note">Into someone who deserves to stand beside you.</p>
-      </div>
-      <div class="become-node" data-i="5" data-final>
-        <span class="bn-label">Version &infin;</span>
-        <p class="bn-note">Still going. Still choosing. Still yours.</p>
-      </div>
-    </div>
-
-    <div class="become-pledge">
-      <p class="big rv">
-        I am not promising perfection.<br>
-        <em>I am promising growth.</em>
-      </p>
-      <p class="sub rv" style="margin-top:1.4em;">
-        Because loving someone also means taking responsibility
-        for the person you become beside them.
+      <p class="sub rv" style="text-align:center;max-width:46ch;margin:0 auto;">
+        Everything around me keeps changing. The noise, the days, the distance&hellip;
+        and still, you are the one constant I keep coming back to.
       </p>
     </div>
+  </section>
 
-    <!-- interactive 3D envelope (letter text comes from config.js → envelopeLetter) -->
-    <div class="env-wrap" id="envWrap">
-      <div class="env-stage" id="envStage">
-        <div class="env" id="envelope" role="button" tabindex="0" aria-expanded="false" aria-label="Open the letter">
-          <span class="env-back"></span>
-          <span class="env-letter" id="envLetter">
-            <span class="env-letter-in">
-              <span class="env-title" id="envTitle"></span>
-              <span class="env-body" id="envBody"></span>
-              <span class="env-sign" id="envSign"></span>
+  <!-- 3. MEMORY CAPSULE -->
+  <section id="capsule" class="scene">
+    <div class="scene-inner">
+      <p class="chapter rv">Chapter <span>03</span> &nbsp;·&nbsp; Memory Capsule</p>
+
+      <div class="capsule-wrap">
+        <div class="capsule-film-flash" id="capsuleFilmFlash"></div>
+        <div class="capsule" id="capsuleEl">
+          <div class="capsule-body">
+            <div class="capsule-inner" id="capsuleInner">
+
+              <!-- photo + caption → capsule -->
+              <div class="photo-frame">
+                <img id="capsulePhoto" alt="" loading="lazy" decoding="async">
+              </div>
+              <p class="photo-cap" id="capsuleCaption"></p>
+
+              <div class="mem-date">Memory 01 &nbsp;·&nbsp; 14 · 02 · 20XX</div>
+              <h3 class="mem-title">The First Date</h3>
+              <p class="mem-line">
+                I remember being nervous in a way I hadn&rsquo;t been in years.
+                And then you laughed, and everything got quiet.
+              </p>
+
+              <div class="fragments">
+                <span class="frag">the first hello</span>
+                <span class="frag">too much coffee</span>
+                <span class="frag">that laugh</span>
+                <span class="frag">a walk that felt too short</span>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="capsule-lid" id="capsuleLid">
+            <span class="lid-label">Capsule · Locked</span>
+            <span class="lid-seal"></span>
+          </div>
+
+          <!-- Date lock -->
+          <div class="capsule-lock" id="capsuleLock">
+            <svg class="lock-icon" viewBox="0 0 48 56" aria-hidden="true">
+              <path class="shackle" id="lockShackle" d="M14 26V18a10 10 0 0 1 20 0v8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <rect x="7" y="25" width="34" height="26" rx="7" fill="rgba(217,72,107,.14)" stroke="currentColor" stroke-width="2.4"/>
+              <circle cx="24" cy="37" r="3.2" fill="currentColor"/><path d="M24 40v5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            <p class="lock-prompt" id="lockPrompt">Our first date?</p>
+            <div class="date-entry" role="group" aria-label="Enter the date">
+              <input id="dateDD" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Day" autocomplete="off">
+              <span aria-hidden="true">&middot;</span>
+              <input id="dateMM" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Month" autocomplete="off">
+              <span aria-hidden="true">&middot;</span>
+              <input id="dateYYYY" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Year" autocomplete="off" class="yr">
+              <button type="button" id="datePick" class="date-pick" aria-label="Choose from a calendar">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+              <input type="date" id="dateNative" class="visually-hidden" aria-hidden="true" tabindex="-1">
+            </div>
+            <p class="lock-hint" id="lockHint" aria-live="polite">Type it, or pick it from the calendar.</p>
+            <button type="button" class="lock-go" id="lockGo">Open the memory</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="capsule-relock" id="capsuleRelock" hidden>
+        <p>Lock it away to preserve the memory&hellip; or keep it just for our eyes. &#10084;&#65039;</p>
+        <button type="button" class="relock-btn" id="relockBtn"><span class="relock-ico" aria-hidden="true"></span>Lock the memory again</button>
+      </div>
+
+      <div class="capsule-outro" id="capsuleOutro">
+        <p>This is only a tiny preview of our story.</p>
+        <p>There&rsquo;s a lot more waiting ahead.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 4. THINGS I CHOOSE -->
+  <section id="choose" class="scene">
+    <div class="scene-inner">
+      <p class="chapter rv">Chapter <span>04</span> &nbsp;·&nbsp; Things I Choose</p>
+      <h2 class="headline rv" style="text-align:center;">
+        Love isn&rsquo;t only a feeling.<br><em>It&rsquo;s a series of choices.</em>
+      </h2>
+
+      <div class="choose-field" id="chooseField">
+        <div class="choose-stage" id="chooseStage">
+          <svg class="choose-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path class="cp-base" id="cpBase" pathLength="1"/>
+            <path class="cp-prog" id="cpProg" pathLength="1"/>
+          </svg>
+
+          <!-- the heart fills as each choice is made -->
+          <div class="choose-heart" id="chooseHeart" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <clipPath id="chHeartClip"><path d="M50 88.5C50 88.5 7.5 61.5 7.5 35.5C7.5 19.5 19.8 9 33 9C41.4 9 47.4 13.3 50 19.6C52.6 13.3 58.6 9 67 9C80.2 9 92.5 19.5 92.5 35.5C92.5 61.5 50 88.5 50 88.5Z"/></clipPath>
+                <linearGradient id="chFillGrad" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0" stop-color="#d9486b"/><stop offset="1" stop-color="#f6a3b8"/>
+                </linearGradient>
+              </defs>
+              <g clip-path="url(#chHeartClip)"><rect id="chFill" x="0" y="0" width="100" height="100" fill="url(#chFillGrad)"/></g>
+              <path class="ch-outline" d="M50 88.5C50 88.5 7.5 61.5 7.5 35.5C7.5 19.5 19.8 9 33 9C41.4 9 47.4 13.3 50 19.6C52.6 13.3 58.6 9 67 9C80.2 9 92.5 19.5 92.5 35.5C92.5 61.5 50 88.5 50 88.5Z"/>
+            </svg>
+          </div>
+
+          <div class="choose-item m-select"     data-x="50" data-y="13" data-z="70"   style="--x:50;--y:13;--d:0"><span class="choose-vis"><span class="choose-num"><b>01</b></span><span class="choose-text" data-t="Choosing you.">Choosing you.</span><i class="motif"></i></span></div>
+          <div class="choose-item m-understand" data-x="21" data-y="37" data-mx="30" data-z="-130" style="--x:21;--y:37;--mx:30;--d:1"><span class="choose-vis"><span class="choose-num"><b>02</b></span><span class="choose-text" data-t="Understanding you.">Understanding you.</span><i class="motif"></i></span></div>
+          <div class="choose-item m-listen"     data-x="78" data-y="35" data-mx="70" data-z="-60"  style="--x:78;--y:35;--mx:70;--d:2"><span class="choose-vis"><span class="choose-num"><b>03</b></span><span class="choose-text" data-t="Listening to you.">Listening to you.</span><i class="motif"></i></span></div>
+          <div class="choose-item m-grow"       data-x="30" data-y="62" data-mx="34" data-z="90"   style="--x:30;--y:62;--mx:34;--d:3"><span class="choose-vis"><span class="choose-num"><b>04</b></span><span class="choose-text" data-t="Growing with you.">Growing with you.</span><i class="motif"></i></span></div>
+          <div class="choose-item m-learn"      data-x="74" data-y="65" data-mx="66" data-z="-170" style="--x:74;--y:65;--mx:66;--d:4"><span class="choose-vis"><span class="choose-num"><b>05</b></span><span class="choose-text" data-t="Learning you.">Learning you.</span><i class="motif"></i></span></div>
+          <div class="choose-item m-care"       data-x="50" data-y="88" data-z="20"   style="--x:50;--y:88;--d:5"><span class="choose-vis"><span class="choose-num"><b>06</b></span><span class="choose-text" data-t="Taking care of what we have.">Taking care of what we have.</span><i class="motif"></i></span></div>
+        </div>
+      </div>
+      <p class="choose-hint" id="chooseHint" aria-live="polite"></p>
+    </div>
+  </section>
+
+
+  <!-- 5. I'M STILL BECOMING -->
+  <section id="becoming" class="scene">
+    <div class="scene-inner">
+      <p class="chapter rv">Chapter <span>05</span> &nbsp;·&nbsp; I&rsquo;m Still Becoming</p>
+      <h2 class="headline rv" style="text-align:center;margin-bottom:clamp(38px,6vh,68px);">
+        I&rsquo;m not the finished version of me yet.
+      </h2>
+
+      <div class="become-track" id="becomeTrack">
+        <div class="become-node" data-i="0">
+          <span class="bn-label">Version 1.0</span>
+          <p class="bn-note">Where I started — imperfect, but honest.</p>
+        </div>
+        <div class="become-node" data-i="1">
+          <span class="bn-label">Learn</span>
+          <p class="bn-note">How you like your tea. How you need your space.</p>
+        </div>
+        <div class="become-node" data-i="2">
+          <span class="bn-label">Understand</span>
+          <p class="bn-note">Why you go quiet sometimes, and what those silences mean.</p>
+        </div>
+        <div class="become-node" data-i="3">
+          <span class="bn-label">Improve</span>
+          <p class="bn-note">The parts of me that still need gentler edges.</p>
+        </div>
+        <div class="become-node" data-i="4">
+          <span class="bn-label">Grow</span>
+          <p class="bn-note">Into someone who deserves to stand beside you.</p>
+        </div>
+        <div class="become-node" data-i="5" data-final>
+          <span class="bn-label">Version &infin;</span>
+          <p class="bn-note">Still going. Still choosing. Still yours.</p>
+        </div>
+      </div>
+
+      <div class="become-pledge">
+        <p class="big rv">
+          I am not promising perfection.<br>
+          <em>I am promising growth.</em>
+        </p>
+        <p class="sub rv" style="margin-top:1.4em;">
+          Because loving someone also means taking responsibility
+          for the person you become beside them.
+        </p>
+      </div>
+
+      <!-- interactive 3D envelope -->
+      <div class="env-wrap" id="envWrap">
+        <div class="env-stage" id="envStage">
+          <div class="env" id="envelope" role="button" tabindex="0" aria-expanded="false" aria-label="Open the letter">
+            <span class="env-back"></span>
+            <span class="env-letter" id="envLetter">
+              <span class="env-letter-in">
+                <span class="env-title" id="envTitle"></span>
+                <span class="env-body" id="envBody"></span>
+                <span class="env-sign" id="envSign"></span>
+              </span>
             </span>
-          </span>
-          <span class="env-front"></span>
-          <span class="env-flap"><span class="flap-out"></span><span class="flap-in"></span></span>
-          <span class="env-seal" aria-hidden="true">&#10084;</span>
+            <span class="env-front"></span>
+            <span class="env-flap"><span class="flap-out"></span><span class="flap-in"></span></span>
+            <span class="env-seal" aria-hidden="true">&#10084;</span>
+          </div>
+          <div class="env-emojis" id="envEmojis" aria-hidden="true"></div>
         </div>
-        <div class="env-emojis" id="envEmojis" aria-hidden="true"></div>
+        <p class="env-hint" id="envHint">Tap to open</p>
       </div>
-      <p class="env-hint" id="envHint">Tap to open</p>
-    </div>
 
-    <div class="after-becoming" id="afterBecoming">
-      <p class="ab-lead rv">I don&rsquo;t just want the beautiful moments.</p>
-      <p class="ab-line rv">I want to keep showing up for all the moments that come after them.</p>
-      <p class="ab-line rv">I want to keep learning.</p>
-      <p class="ab-line rv">Keep changing.</p>
-      <p class="ab-line rv">Keep growing.</p>
-      <p class="ab-line rv">And keep becoming someone who deserves the life we build together.</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     6. THE TWO HEARTS — STICKY SCROLL SCENE
-     ============================================================ -->
-<section id="distance" class="distance-wrap">
-  <div class="distance-sticky">
-    <div class="webgl-layer" id="distance3d" aria-hidden="true"></div>
-    <div class="distance-vignette"></div>
-    <div class="distance-texts">
-      <p data-th="0.05" data-end="0.31">No matter how much distance there is&hellip;</p>
-      <p data-th="0.38" data-end="0.64">&hellip;some connections just know where to go.</p>
-      <p data-th="0.72" data-end="0.93">And somehow, through all the noise,<br>I still find my way to you.</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     7. GALLERY — three 3D photo spheres (data lives in config.js)
-     ============================================================ -->
-<section id="gallery" class="scene">
-  <div class="scene-inner gal-inner">
-    <p class="chapter rv">Chapter <span>07</span> &nbsp;·&nbsp; Our Gallery</p>
-
-    <div class="gal-tabs rv" id="galTabs" role="tablist" aria-label="Photo collections"></div>
-
-    <div class="gal-stage rv" id="galStage" tabindex="0"
-         aria-label="Photo sphere. Drag to turn it, or use the arrow keys. Press Enter to open the front photo.">
-      <div class="gal-scale" id="galScale"><div class="gal-sphere" id="galSphere"></div></div>
-    </div>
-
-    <p class="gal-hint rv" id="galHint">Drag to turn &nbsp;·&nbsp; tap a photo to open it</p>
-  </div>
-</section>
-
-
-<!-- ============================================================
-     8. THE SURPRISE (formerly the teaser) — deeper mauve panel
-     ============================================================ -->
-<section id="teaser" class="scene">
-  <div class="scene-inner">
-    <div class="teaser-card">
-      <div class="teaser-orn" aria-hidden="true"><i></i><b>&#10084;</b><i></i></div>
-      <div class="teaser-msg" id="teaserMsg">
-        <p>Babe, stay tuned — because more of it is yet to come ahead.</p>
-        <p>I know you don&rsquo;t like surprises made for yourself&hellip;</p>
-        <p>but trust me, your excitement won&rsquo;t be wasted.</p>
-        <p class="warm">I&rsquo;ll send it on our next best-moments day. ❤️</p>
-        <p>Till then, don&rsquo;t forget to take care of yourself.</p>
-        <p class="love">And yes, of course&hellip;<br>I love you, my cutie bae. 😘</p>
+      <div class="after-becoming" id="afterBecoming">
+        <p class="ab-lead rv">I don&rsquo;t just want the beautiful moments.</p>
+        <p class="ab-line rv">I want to keep showing up for all the moments that come after them.</p>
+        <p class="ab-line rv">I want to keep learning.</p>
+        <p class="ab-line rv">Keep changing.</p>
+        <p class="ab-line rv">Keep growing.</p>
+        <p class="ab-line rv">And keep becoming someone who deserves the life we build together.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- ============================================================
-     9. THE MISCHIEF SECTION
-     ============================================================ -->
-<section id="mischief" class="scene">
-  <div class="scene-inner">
-    <h2 class="mischief-title rv">Wanna watch more? 👀</h2>
-
-    <div class="mischief-buttons" id="mischiefButtons">
-      <button class="mbtn mbtn-yes" id="btnYes">Yes ofc ❤️</button>
-      <button class="mbtn mbtn-rn"  id="btnRn">Yes rn 😌</button>
+  <!-- 6. THE TWO HEARTS -->
+  <section id="distance" class="distance-wrap">
+    <div class="distance-sticky">
+      <div class="webgl-layer" id="distance3d" aria-hidden="true"></div>
+      <div class="distance-vignette"></div>
+      <div class="distance-texts">
+        <p data-th="0.05" data-end="0.31">No matter how much distance there is&hellip;</p>
+        <p data-th="0.38" data-end="0.64">&hellip;some connections just know where to go.</p>
+        <p data-th="0.72" data-end="0.93">And somehow, through all the noise,<br>I still find my way to you.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- Both stay hidden (not just transparent) until YES OFC is clicked -->
-    <p class="mischief-reaction" id="mischiefReaction" hidden aria-live="polite">I knew you&rsquo;d choose wisely. 😌❤️</p>
 
-    <div class="mischief-reveal" id="mischiefReveal" hidden>
-      <p>Sorry, my love 😭❤️</p>
-      <p>Though my love is always right&hellip;</p>
-      <p>this time, it&rsquo;s my little mischief.</p>
-      <p>Or maybe it&rsquo;s just my wish that you follow this direction. 😅</p>
+  <!-- 7. GALLERY -->
+  <section id="gallery" class="scene">
+    <div class="scene-inner gal-inner">
+      <p class="chapter rv">Chapter <span>07</span> &nbsp;·&nbsp; Our Gallery</p>
 
-      <div class="next-teaser" id="nextTeaser" hidden>
-        <p class="next-teaser-line">The teaser of my next idea is already here 😉</p>
-        <div class="seal-card" id="sealCard" aria-hidden="true">
-          <div class="seal-face">
-          <div class="seal-glow"></div>
-          <div class="seal-shapes"><span></span><span></span><span></span></div>
-          <div class="seal-redact"><i style="--w:74%"></i><i style="--w:52%"></i><i style="--w:63%"></i></div>
-          <div class="seal-foot"><span class="seal-bar"><b></b></span><em>still being made &middot; no peeking</em></div>
+      <div class="gal-tabs rv" id="galTabs" role="tablist" aria-label="Photo collections"></div>
+
+      <div class="gal-stage rv" id="galStage" tabindex="0"
+          aria-label="Photo sphere. Drag to turn it, or use the arrow keys. Press Enter to open the front photo.">
+        <div class="gal-scale" id="galScale"><div class="gal-sphere" id="galSphere"></div></div>
+      </div>
+
+      <p class="gal-hint rv" id="galHint">Drag to turn &nbsp;·&nbsp; tap a photo to open it</p>
+    </div>
+  </section>
+
+
+  <!-- 8. THE SURPRISE -->
+  <section id="teaser" class="scene">
+    <div class="scene-inner">
+      <div class="teaser-card">
+        <div class="teaser-orn" aria-hidden="true"><i></i><b>&#10084;</b><i></i></div>
+        <div class="teaser-msg" id="teaserMsg">
+          <p>Babe, stay tuned — because more of it is yet to come ahead.</p>
+          <p>I know you don&rsquo;t like surprises made for yourself&hellip;</p>
+          <p>but trust me, your excitement won&rsquo;t be wasted.</p>
+          <p class="warm">I&rsquo;ll send it on our next best-moments day. ❤️</p>
+          <p>Till then, don&rsquo;t forget to take care of yourself.</p>
+          <p class="love">And yes, of course&hellip;<br>I love you, my cutie bae. 😘</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 9. THE MISCHIEF SECTION -->
+  <section id="mischief" class="scene">
+    <div class="scene-inner">
+      <h2 class="mischief-title rv">Wanna watch more? 👀</h2>
+
+      <div class="mischief-buttons" id="mischiefButtons">
+        <button class="mbtn mbtn-yes" id="btnYes">Yes ofc ❤️</button>
+        <button class="mbtn mbtn-rn"  id="btnRn">Yes rn 😌</button>
+      </div>
+
+      <p class="mischief-reaction" id="mischiefReaction" hidden aria-live="polite">I knew you&rsquo;d choose wisely. 😌❤️</p>
+
+      <div class="mischief-reveal" id="mischiefReveal" hidden>
+        <p>Sorry, my love 😭❤️</p>
+        <p>Though my love is always right&hellip;</p>
+        <p>this time, it&rsquo;s my little mischief.</p>
+        <p>Or maybe it&rsquo;s just my wish that you follow this direction. 😅</p>
+
+        <div class="next-teaser" id="nextTeaser" hidden>
+          <p class="next-teaser-line">The teaser of my next idea is already here 😉</p>
+          <div class="seal-card" id="sealCard" aria-hidden="true">
+            <div class="seal-face">
+            <div class="seal-glow"></div>
+            <div class="seal-shapes"><span></span><span></span><span></span></div>
+            <div class="seal-redact"><i style="--w:74%"></i><i style="--w:52%"></i><i style="--w:63%"></i></div>
+            <div class="seal-foot"><span class="seal-bar"><b></b></span><em>still being made &middot; no peeking</em></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+
+
+  <!-- 10. FINAL REVEAL — stays hidden until the very end of the page -->
+  <section id="final" class="scene">
+    <div class="webgl-layer" id="final3d" aria-hidden="true"></div>
+
+    <div class="final-inner">
+      <div class="final-heart" id="finalHeart" aria-hidden="true"></div>
+
+      <p class="final-line" id="fLine1">Out of every single thing that could have happened,</p>
+      <p class="final-line" id="fLine2">in a world this loud and this big&hellip;</p>
+      <p class="final-line" id="fLine3">I found you. And I&rsquo;d choose you again.</p>
+
+      <h2 class="final-love" id="fLove">I love you. ❤️</h2>
+      <p class="final-ps" id="fPs">P.S. — you&rsquo;re still my favourite notification. 😌</p>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo">
+    <div class="lb-card">
+      <button type="button" class="lb-close" id="lbClose" aria-label="Close photo">&times;</button>
+      <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo">&#8249;</button>
+      <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="Next photo">&#8250;</button>
+      <img id="lbImg" alt="">
+      <p class="lb-cap" id="lbCap"></p>
+    </div>
   </div>
-</section>
 
+  <noscript><p style="position:fixed;inset:auto 0 20px;text-align:center;color:#5e2c3e">This experience needs JavaScript.</p></noscript>
 
-<!-- ============================================================
-     10. FINAL REVEAL — stays hidden until the very end of the page
-     ============================================================ -->
-<section id="final" class="scene">
-  <div class="webgl-layer" id="final3d" aria-hidden="true"></div>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@4.0.2/lib/anime.iife.min.js"
+          onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/animejs@4.0.2/lib/anime.iife.min.js';document.head.appendChild(s);"></script>
 
-  <div class="final-inner">
-    <!-- reserves the space where the 3D heart is drawn -->
-    <div class="final-heart" id="finalHeart" aria-hidden="true"></div>
-
-    <p class="final-line" id="fLine1">Out of every single thing that could have happened,</p>
-    <p class="final-line" id="fLine2">in a world this loud and this big&hellip;</p>
-    <p class="final-line" id="fLine3">I found you. And I&rsquo;d choose you again.</p>
-
-    <h2 class="final-love" id="fLove">I love you. ❤️</h2>
-    <p class="final-ps" id="fPs">P.S. — you&rsquo;re still my favourite notification. 😌</p>
-  </div>
-</section>
-
-
-<!-- gallery lightbox (kept at body level so scroll transforms never affect it) -->
-<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo">
-  <div class="lb-card">
-    <button type="button" class="lb-close" id="lbClose" aria-label="Close photo">&times;</button>
-    <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo">&#8249;</button>
-    <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="Next photo">&#8250;</button>
-    <img id="lbImg" alt="">
-    <p class="lb-cap" id="lbCap"></p>
-  </div>
-</div>
-
-<noscript><p style="position:fixed;inset:auto 0 20px;text-align:center;color:#5e2c3e">This experience needs JavaScript.</p></noscript>
-
-<!-- ============ LIBRARIES (CDN) ============ -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/animejs@4.0.2/lib/anime.iife.min.js"
-        onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/animejs@4.0.2/lib/anime.iife.min.js';document.head.appendChild(s);"></script>
-
-<!-- ============ OUR CODE (plain files, no build step) ============ -->
-<script src="assets/js/config.js"></script>
-<script src="assets/js/core.js"></script>
-<script src="assets/js/heartkit.js"></script>
-<script src="assets/js/scenes3d.js"></script>
-<script src="assets/js/chapters.js"></script>
-<script src="assets/js/music.js"></script>
+  <script src="config.js"></script>
+  <script src="core.js"></script>
+  <script src="heartkit.js"></script>
+  <script src="scenes3d.js"></script>
+  <script src="chapters.js"></script>
+  <script src="music.js"></script>
 </body>
 </html>
